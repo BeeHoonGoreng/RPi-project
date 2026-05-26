@@ -1,0 +1,96 @@
+# RPi Documentation
+Ridhuan Syafiq
+
+# CM3267 RPi Projects
+
+Data collection projects with RPi 5.
+
+1.  Spectrometer project
+2.  Weather station project
+
+Originally developed for RPi 3 — this repo contains the upgraded, tested
+version for RPi 5.
+
+------------------------------------------------------------------------
+
+## Hardware & OS
+
+-   **Device:** Raspberry Pi 5
+-   **OS:** Raspberry Pi OS Trixie (Debian 13), 64-bit — released
+    2026-04-21
+-   **Kernel:** 6.12.75 (check with `uname -r`)
+-   **Python:** 3.13.5 (check with `python3 --version`)
+
+------------------------------------------------------------------------
+
+## Repo Structure
+
+    RPi-project/
+    ├── spectrometer/
+    │   ├── spectrometer_reqs.txt
+    │   ├── main.py
+    │   ├── sensor.py
+    │   └── utils.py
+    ├── weather_station/
+    │   ├── weather_station_reqs.txt
+    │   ├── main.py
+    │   ├── sensor.py
+    │   └── utils.py
+    ├── setup.sh
+    └── README.md
+
+Each project has its own virtual environment and dependencies to avoid
+conflicts.
+
+------------------------------------------------------------------------
+
+## Setup
+
+Open a terminal and clone the repo onto the Pi:
+
+``` bash
+cd ~
+git clone https://github.com/BeeHoonGoreng/RPi-project.git
+cd RPi-project
+bash setup.sh
+```
+
+You will now have a copy of the repo with the above structure as a
+folder labelled *RPi-project*. The bash script *setup.sh* creates the
+virtual environments and downloads dependencies for you.
+
+------------------------------------------------------------------------
+
+## Usage
+
+Before running any *.py* script, you have activate the relevant venv by
+going into the correct project folder and running
+`source venv/bin/activate`. Run `deactivate` after to prevent conflicts.
+Example:
+
+``` bash
+cd ~/RPi-project/spectrometer
+source venv/bin/activate
+
+## Run scripts and collect data
+
+deactivate
+```
+
+------------------------------------------------------------------------
+
+## Notes
+
+-   Original code was written for RPi 3 — dependencies updated for RPi 5
+    / Python 3.13.5 compatibility
+
+    -   Weather station - adafruit-dht is depreciated.
+        [adafruit-circuitpython-dht](https://github.com/adafruit/Adafruit_CircuitPython_DHT)
+        is used instead
+
+-   `***_reqs.txt` in each folder pins exact versions (`pip freeze`) for
+    reproducibility
+
+-   Tested on:
+
+-   Known issues:

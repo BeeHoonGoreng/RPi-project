@@ -27,15 +27,17 @@ version for RPi 5.
 
     RPi-project/
     ├── spectrometer/
+    │   ├── README.md
     │   ├── spectrometer_reqs.txt
-    │   ├── main.py
-    │   ├── sensor.py
-    │   └── utils.py
+    │   ├── blinkatest.py
+    │   ├── pi_spectroscopy_v3-2.py
+    │   └── voltage_read.py
     ├── weather_station/
+    │   ├── README.md
     │   ├── weather_station_reqs.txt
-    │   ├── main.py
-    │   ├── sensor.py
-    │   └── utils.py
+    │   ├── V2_DHT22_cal.py
+    │   ├── V2_weather.py
+    │   └── V2_weatherplot.py
     ├── setup.sh
     └── README.md
 
@@ -77,6 +79,9 @@ source venv/bin/activate
 deactivate
 ```
 
+Each project folder has its own README.md which details the functions of
+the scripts they contain.
+
 ------------------------------------------------------------------------
 
 ## Notes
@@ -88,8 +93,8 @@ deactivate
         [adafruit-circuitpython-dht](https://github.com/adafruit/Adafruit_CircuitPython_DHT)
         is used instead
 
--   `***_reqs.txt` in each folder pins exact versions (`pip freeze`) for
-    reproducibility
+-   `*_reqs.txt` in each folder pins exact package versions (using
+    `pip freeze`) for reproducibility
 
 -   Tested on:
 

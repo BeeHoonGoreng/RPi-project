@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # RPi Documentation
 Ridhuan Syafiq
 
@@ -130,8 +129,4 @@ def analogRead():
 
 python and python3 both refer to the same path. is there a difference?
 
-maybe make the code more idiot-proof (long-term)
-=======
-# RPi-project
-test test
->>>>>>> 60b5d66116ffaa78f546040b6346623d78a45289
+maybe make the code more idiot-proof (low-priority)

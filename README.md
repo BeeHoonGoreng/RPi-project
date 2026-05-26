@@ -1,7 +1,7 @@
-# RPi Documentation
+# CM3267 RPi Projects
 Ridhuan Syafiq
 
-# CM3267 RPi Projects
+## Documentation
 
 Data collection projects with RPi 5.
 

@@ -1,132 +1,96 @@
 # RPi Documentation
 Ridhuan Syafiq
 
-## Objectives
+# CM3267 RPi Projects
 
-- Replicate spectrometer and weather station projects on RPi 5.
+Data collection projects with RPi 5.
 
-- Check hardware/software for any depreciation/incompatibility with
-  RPi5.
+1.  Spectrometer project
+2.  Weather station project
 
-- Repackage teaching materials.
+Originally developed for RPi 3 — this repo contains the upgraded, tested
+version for RPi 5.
 
-- Get as many RPi running.
+------------------------------------------------------------------------
 
-## Key differences between RPi 5 vs RPi 3
+## Hardware & OS
 
-- Internet works fine with NUS_Guest. Need to use handphone for OTP,
-  will give access for 5 days.
+-   **Device:** Raspberry Pi 5
+-   **OS:** Raspberry Pi OS Trixie (Debian 13), 64-bit — released
+    2026-04-21
+-   **Kernel:** 6.12.75 (check with `uname -r`)
+-   **Python:** 3.13.5 (check with `python3 --version`)
 
-- RPi 5 does not support installation of packages system-wide,
-  necessitates the use of virtual environments. (discussed below)
+------------------------------------------------------------------------
 
-- 
+## Repo Structure
 
-## Protocol for setting up new RPis
+    RPi-project/
+    ├── spectrometer/
+    │   ├── spectrometer_reqs.txt
+    │   ├── main.py
+    │   ├── sensor.py
+    │   └── utils.py
+    ├── weather_station/
+    │   ├── weather_station_reqs.txt
+    │   ├── main.py
+    │   ├── sensor.py
+    │   └── utils.py
+    ├── setup.sh
+    └── README.md
 
-1.  Download [Raspberry Pi
-    Imager](https://www.raspberrypi.com/software/).
+Each project has its own virtual environment and dependencies to avoid
+conflicts.
 
-2.  Plug in microsd card into a USB reader and follow set-up
-    instructions on the imager app.
+------------------------------------------------------------------------
 
-3.  Specifications
+## Setup
 
-    <table>
-    <colgroup>
-    <col style="width: 22%" />
-    <col style="width: 77%" />
-    </colgroup>
-    <thead>
-    <tr>
-    <th>Setup steps</th>
-    <th>Choice</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-    <td>Device</td>
-    <td>Raspberry Pi 5</td>
-    </tr>
-    <tr>
-    <td>OS</td>
-    <td><p>Raspberry Pi OS (64-bit). Released 2026-04-21.</p>
-    <p>64 bit is important for RPi5 compatibility.<br />
-    Version is important for consistency. Might have to an additional step
-    of downloading this particular image from archive if newer versions are
-    released.</p></td>
-    </tr>
-    <tr>
-    <td>Storage</td>
-    <td>Select the USB reader</td>
-    </tr>
-    <tr>
-    <td>Hostname</td>
-    <td>***</td>
-    </tr>
-    <tr>
-    <td>Localisation</td>
-    <td>Capital city &gt; Singapore (Singapore)<br />
-    Timezone &gt; Asia/Singapore<br />
-    Keyboard layout &gt; us</td>
-    </tr>
-    <tr>
-    <td>User</td>
-    <td>Username &gt; pi<br />
-    Password &gt; 12345</td>
-    </tr>
-    <tr>
-    <td>Wi-Fi</td>
-    <td><strong>OPTIONAL<br />
-    </strong>SSID &gt; NUS_Guest</td>
-    </tr>
-    <tr>
-    <td>Remote authentication/Raspberry Pi Connect</td>
-    <td>Default settings (not activated)</td>
-    </tr>
-    </tbody>
-    </table>
+Open a terminal and clone the repo onto the Pi:
 
-4.  This will wipe the sd card and automatically format to FAT32.
-
-5.  Plug-and-play into the RPi 5.
-
-6.  Go to terminal to check date and time.
-
-    Check: `timedatectl`  
-    Change: `sudo date -s "25 MAY 2026 11:37:00"` (change accordingly).
-
-## Setting up virtual environments for each project
-
-**One time set-up**
-
-## Weather station
-
-adafruit-dht is depreciated. need to update to
-[adafruit-circuitpython-dht](https://github.com/adafruit/Adafruit_CircuitPython_DHT)
-
-## Adjusted code
-
-pi_spectroscopy_v3-2.py, line 28 to 31
-
-``` python
-# OLD
-
-def analogRead():                         #Read ADC value, only from Chn 0
-    chan = AnalogIn(ads, ADS.P0)          #Reading from Chn 0
-    current = (chan.value,chan.voltage)   #Extract Digital Value and Voltage
-    return (current[0],current[1])
-  
-# NEW
-
-def analogRead():                         
-    chan = AnalogIn(ads, 0)               #Change this line (manually set int=0)
-    current = (chan.value,chan.voltage)   
-    return (current[0],current[1])
+``` bash
+cd ~
+git clone https://github.com/BeeHoonGoreng/RPi-project.git
+cd RPi-project
+bash setup.sh
 ```
 
-## Misc. Notes
+You will now have a copy of the repo with the above structure as a
+folder labelled *RPi-project*. The bash script *setup.sh* creates the
+virtual environments and downloads dependencies for you.
 
-python and python3 both refer to the same path. is there a difference?
+------------------------------------------------------------------------
 
-maybe make the code more idiot-proof (low-priority)
+## Usage
+
+Before running any *.py* script, you have activate the relevant venv by
+going into the correct project folder and running
+`source venv/bin/activate`. Run `deactivate` after to prevent conflicts.
+Example:
+
+``` bash
+cd ~/RPi-project/spectrometer
+source venv/bin/activate
+
+## Run scripts and collect data
+
+deactivate
+```
+
+------------------------------------------------------------------------
+
+## Notes
+
+-   Original code was written for RPi 3 — dependencies updated for RPi 5
+    / Python 3.13.5 compatibility
+
+    -   Weather station - adafruit-dht is depreciated.
+        [adafruit-circuitpython-dht](https://github.com/adafruit/Adafruit_CircuitPython_DHT)
+        is used instead
+
+-   `***_reqs.txt` in each folder pins exact versions (`pip freeze`) for
+    reproducibility
+
+-   Tested on:
+
+-   Known issues:

@@ -1,0 +1,33 @@
+pi 12345
+
+not [ossible to update
+
+123Abc!?
+
+installed matplotlib using 
+sudo apt install python3-matplotlib
+
+
+replicate spectrometer project
+replicate weather station
+
+check if hardware is still updated
+
+repackage teaching materials
+
+get as many rpis running
+
+python and python3 both refer to same installation.
+use python3
+
+
+set up 2 venv. 1 for spectroscopy 1 for weather station
+
+# Create
+python3 -m venv venv
+
+# Activate
+source venv/bin/activate
+
+# Deactivate
+deactivate

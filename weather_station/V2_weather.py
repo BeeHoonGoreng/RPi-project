@@ -136,8 +136,12 @@ def weather():
 
 def recording():
     cmd_set_sleep(0)
-    temperature = DHT_SENSOR.temperature
-    humidity = DHT_SENSOR.humidity
+    try:
+        temperature = DHT_SENSOR.temperature
+        humidity = DHT_SENSOR.humidity
+    except RuntimeError:
+        print("DHT22 read failed, retrying next cycle...")
+        return
     
     """BASED ON YOUR CALIBRATION OR THE DETERMINATION OF ERROR, CHANGE THE HUMIDITY AND TEMPERATURE ACCORDINGLY BY ADDING AN EQUATION"""
     """e.g HUM = humidity + 0.3. Then change the defined humidity and temperature terms in the script below respectively"""

@@ -1,9 +1,10 @@
-#!/usr/bin/python -u
-import RPi.GPIO as GPIO
+#!/usr/bin/env python3 -u
 import serial
 import time, struct
 import schedule
-import Adafruit_DHT
+import lgpio
+import adafruit_dht
+import board
 from datetime import datetime
 import matplotlib
 import matplotlib.pyplot as plt
@@ -24,8 +25,8 @@ filename = "Finaltest"                      #<< Change the filename
 "CHANNEL CREATION OF HUMIDITY AND TEMPERATURE DHT22 SENSOR"
 #############################################
 
-DHT_SENSOR = Adafruit_DHT.DHT22
-DHT_PIN = 4                               ### Pin number can change with your preference, check GPIO pinout for reference
+DHT_PIN = 4
+DHT_SENSOR = adafruit_dht.DHT22(board.D4)                            ### Pin number can change with your preference, check GPIO pinout for reference
 
 #############################################
 "CHANNEL CREATION OF NOVA PM SENSOR"
@@ -52,7 +53,7 @@ byte, data = 0, ""
 
 def read_response():
     byte = 0
-    while byte != "\xaa":
+    while byte != b"\xaa":
         byte = ser.read(size=1)
 
     d = ser.read(size=9)
@@ -65,9 +66,9 @@ def construct_command(cmd, data=[]):
     assert len(data) <= 12
     data += [0,]*(12-len(data))
     checksum = (sum(data)+cmd-2)%256
-    ret = "\xaa\xb4" + chr(cmd)
-    ret += ''.join(chr(x) for x in data)
-    ret += "\xff\xff" + chr(checksum) + "\xab"
+    ret = b"\xaa\xb4" + bytes([cmd])
+    ret += bytes(data)
+    ret += b"\xff\xff" + bytes([checksum]) + b"\xab"
 
     if DEBUG:
         dump(ret, '> ')
@@ -77,14 +78,14 @@ def process_data(d):
     r = struct.unpack('<HHxxBB', d[2:])
     pm25 = r[0]/10.0
     pm10 = r[1]/10.0
-    checksum = sum(ord(v) for v in d[2:8])%256
+    checksum = sum(d[2:8])%256
     return [pm25, pm10]
 
 def cmd_query_data():
     ser.write(construct_command(CMD_QUERY_DATA))
     d = read_response()
     values = []
-    if d[1] == "\xc0":
+    if d[1:2] == b"\xc0":
         values = process_data(d)
     return values
 
@@ -135,7 +136,8 @@ def weather():
 
 def recording():
     cmd_set_sleep(0)
-    humidity,temperature = Adafruit_DHT.read_retry(DHT_SENSOR, DHT_PIN)
+    temperature = DHT_SENSOR.temperature
+    humidity = DHT_SENSOR.humidity
     
     """BASED ON YOUR CALIBRATION OR THE DETERMINATION OF ERROR, CHANGE THE HUMIDITY AND TEMPERATURE ACCORDINGLY BY ADDING AN EQUATION"""
     """e.g HUM = humidity + 0.3. Then change the defined humidity and temperature terms in the script below respectively"""

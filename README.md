@@ -15,11 +15,11 @@ version for RPi 5.
 
 ## Hardware & OS
 
--   **Device:** Raspberry Pi 5
--   **OS:** Raspberry Pi OS Trixie (Debian 13), 64-bit — released
-    2026-04-21
--   **Kernel:** 6.12.75 (check with `uname -r`)
--   **Python:** 3.13.5 (check with `python3 --version`)
+- **Device:** Raspberry Pi 5
+- **OS:** Raspberry Pi OS Trixie (Debian 13), 64-bit — released
+  2026-04-21
+- **Kernel:** 6.12.75 (check with `uname -r`)
+- **Python:** 3.13.5 (check with `python3 --version`)
 
 ------------------------------------------------------------------------
 
@@ -167,16 +167,16 @@ the scripts they contain.
 
 ## Notes
 
--   Original code was written for RPi 3 — dependencies updated for RPi 5
-    / Python 3.13.5 compatibility
+- Original code was written for RPi 3 — dependencies updated for RPi 5 /
+  Python 3.13.5 compatibility
 
-    -   Weather station - adafruit-dht is depreciated.
-        [adafruit-circuitpython-dht](https://github.com/adafruit/Adafruit_CircuitPython_DHT)
-        is used instead
+  - Weather station - adafruit-dht is depreciated.
+    [adafruit-circuitpython-dht](https://github.com/adafruit/Adafruit_CircuitPython_DHT)
+    is used instead
 
--   `*_reqs.txt` in each folder pins exact package versions (using
-    `pip freeze`) for reproducibility
+- `*_reqs.txt` in each folder pins exact package versions (using
+  `pip freeze`) for reproducibility
 
--   Tested on:
+- Tested on:
 
--   Known issues:
+- Known issues:

@@ -1,107 +1,105 @@
-# CM3267 Lab Instruction for Weather Station
+# CM3267 Lab Instruction for Spectrometer
+Ridhuan Syafiq
 
-Welcome to this module! To get things started, setup your Raspberry Pi (RPi) with the correct Raspbian version. You can use [RPi Imager Software](https://www.raspberrypi.org/software/ "enter this website to download the software") to flash the **recommended** 32-bit Raspbian OS onto your 16/32 GB micro-SD (uSD) card.
+## Weather station setup
 
-Once you pluck the uSD card into the RPi board, boot it and continue setting up the desired language, US keyboard type and location. **MAKE SURE NOT** to update the OS when the update request prompts out.
+------------------------------------------------------------------------
 
-NOTE:
+### Turning on virtual environment
 
-- To check if you have the right OS version on the RPi, open a terminal and type `uname -r`.
-- _5.10.17-v7+_ should be the output. Otherwise, install the OS manually (on PC) through the image provided [here](https://downloads.raspberrypi.org/raspios_armhf/images/raspios_armhf-2021-05-28/2021-05-07-raspios-buster-armhf.zip "5.10.17-v7+ OS image download") and flash it once more with RPi Imager software.
+> [!WARNING]
+>
+> Make sure the steps in [RPi Setup](../README.md) were followed before
+> proceeding. Verify by checking that
+> `~/RPi-project/weather_station/venv` exists.
 
-## Download the repo and necessary packages
+1.  Run the following in the terminal.
 
-Open up a terminal and follow the commands below:
+    ``` bash
+    cd ~/RPi-project/weather_station
+    source venv/bin/activate
+    ```
 
-```
-cd ~
-git clone https://github.com/Nntsyeo/weather_station.git
-```
+2.  Now, you should be able to execute the python scripts accordingly:
 
-You should now have a folder named _weather_station_ in your home directory. Feel free to use Thonny ('RPi start button' -> 'Programming' -> 'Thonny Python IDE') to read up the python scripts. **Note** that you **shouldn't run** the python scripts through Thonny due to the varying python versions used by the IDE.
+    ``` bash
+    python3 weather.py
+    python3 DHT22_cal.py
+    python3 weatherplot.py
+    ```
 
-Next, you will need to install the python packages through the terminal.
+There are 3 scripts for use.
 
-```
-sudo apt-get update
-sudo pip3 install Adafruit_DHT matplotlib datetime
-sudo pip install pyserial Adafruit_DHT schedule datetime
-sudo apt-get install -y python-matplotlib
-```
+- *weather.py* is the main data collection script.
 
-Now, you should be able to execute the python scripts accordingly:
+- *DHT_cal.py* helps you find the mean absolute difference between the
+  actual and recorded temperature/humidity. You can then append this
+  values to *weather.py*.
 
-```
-sudo python V2_weather.py
-sudo python3 DHT22_cal.py
-sudo python3 weatherplot.py
-```
+- *weatherploy.py* takes the output of *weather.py* and outputs a simple
+  line plot.
 
-NOTE:
+------------------------------------------------------------------------
 
-- _V2_weather.py_ uses the particle sensor on port _/dev/ttyUSB0_. Thus, to make sure the particle sensor is active on RPi, simply type `ls \dev\tty*` on the terminal and check if _/dev/ttyUSB0_ is present (usually at the end of the list).
+### Execute weather.py on boot
 
-@1 ----- If _/dev/ttyUSB0_ is not present, try using the particle sensor on another USB port. <br>
-@2 ----- If a different portname is present (for e.g., _/dev/ttyUSB2_), simply _V2_weather.py_ at line 46 to `ser.port = "/dev/ttyUSB<port_number>"`.
+If you wish to execute the *weather.py* script on boot, instructions
+below allow adding of the python execution to the boot sequence.
 
-## Potential error during the python execution
+1.  Create a shell script named *launcher.sh* in /home/pi/Desktop/:
 
-1. For _V2_weatherplot.py_:
+    ``` bash
+    cd ~/Desktop
+    nano launcher.sh
+    ```
 
-- Error output:
-  "RuntimeError: module compiled against API version 0xe but this version of numpy is 0xd"
+2.  Copy the following into the *launcher.sh* text file:
 
-Try doing this:
+    ``` bash
+    #!/bin/sh
+    cd /home/pi/RPI-project/weather_station
+    sudo python3 weather.py
+    ```
 
-```
-sudo apt-get install -y libatlas-base-dev
-sudo pip3 install numpy --upgrade
-cd ~/weather_station
-sudo python3 V2_weatherplot.py
-```
+3.  Create a log folder for crontab logging via terminal:
 
-## Execute _V2_weather.py_ on boot
+    ``` bash
+    cd ~
+    mkdir logs
+    ```
 
-If you wish to execute the _V2_weather.py_ script on boot, instructions below allow adding of the python execution into the booting sequence.
+4.  Access crontab (with `sudo crontab -e`) and append the following to
+    the end of the crontab script. Use /bin/nano as the editor if
+    prompted:
 
-1. Create a shell script named _launcher.sh_ in /home/pi/Desktop/ directory.
+    ``` bash
+    @reboot sh /home/pi/Desktop/launcher.sh >/home/pi/logs/cronlog 2>&1
+    ```
 
-On terminal:
+5.  Exit by pressing ‘Ctrl-X’ \> ‘y’ \> enter.
 
-```
-cd ~/Desktop
-nano launcher.sh 
-```
+6.  Reboot your RPi and the script will run in the background:
 
-Copy the following script into _launcher.sh_ file:
-
-```
-#!/bin/sh
-cd /home/pi/weather_station
-sudo python V2_weather.py
-```
-
-2. Use crontab method to execute launcher.sh on startup.
-
-Create a log folder for crontab logging via terminal:
-
-```
-cd ~
-mkdir logs
-```
-
-And then with the same terminal, use `sudo crontab -e` (with _/bin/nano_ as the editor if prompted).
-Add the following line at the end of the crontab script:
-
-`@reboot sh /home/pi/Desktop/launcher.sh >/home/pi/logs/cronlog 2>&1`
-(NOTE) Exit with pressing 'Ctrl-X', 'y' and then 'enter'.
-
-Enter the following to restart your RPi and the python script will run in the background afterwards.
-`sudo reboot`
-
+    ``` bash
+    sudo reboot
+    ```
 
 NOTE:
 
-- Your RPi will reboot, and you can still use the RPi as per usual as the python script is actually running at the background.
-- To check if there's any error occurred, simply output log file by `cat ~/logs/cronlog` on terminal. Otherwise, you will have _Finaltest.csv_ (data collection file) created in your /home/pi/weather_station directory.
-- (HINT) Adjust the _schedule_ function calls to acquire hourly readings, as by default, the script acquire data in every five (5) seconds.
+- Your RPi will reboot, and you can still use the RPi as per usual as
+  the python script is running in the background.
+
+- To check any error occured, simply check the log file by inputting
+  `cat ~/logs/cronlog` into the terminal. Otherwise, *Finaltest.csv*
+  contains your data collection in
+  /home/pi/RPi-projects/weather_station/,
+
+- Adjust the schedule function calls to acquire readings in an
+  appropriate interval.
+
+------------------------------------------------------------------------
+
+> [!WARNING]
+>
+> Always run `deactivate` in the terminal once you’re done with the
+> scripts, to make sure the venv is deactivated.

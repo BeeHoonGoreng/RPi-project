@@ -13,8 +13,6 @@ import matplotlib.pyplot as plt
 "INPUT SECTION"
 #############################################
 
-delay = 10                                  #interval of recording data (in seconds) used in the function 'recording()' below
-
 """Change filename"""
 
 filename = "Finaltest"                      #<< Change the filename
@@ -123,16 +121,21 @@ def weather():
 
 ##        schedule.every().hour.at(":30").do(recording)
 #         schedule.every().hour.at(":00").do(recording)
-        
-        print("recording data...")
 #         schedule.every(1).minutes.do(recording)
 ##        schedule.every().day.do(recording)
         schedule.every(5).seconds.do(recording)
+        
+        print("recording data...")
+
         while True:
             schedule.run_pending()
             time.sleep(1)
     except KeyboardInterrupt: # If CTRL+C is pressed, exit cleanly:
         print("Program end")
+
+    
+    """BASED ON YOUR CALIBRATION OR THE DETERMINATION OF ERROR, CHANGE THE HUMIDITY AND TEMPERATURE ACCORDINGLY BY ADDING AN EQUATION"""
+    """e.g humidity = DHT_SENSOR.humidity + 0.3. Then change the defined humidity and temperature terms in the script below respectively"""
 
 def recording():
     cmd_set_sleep(0)
@@ -142,9 +145,6 @@ def recording():
     except RuntimeError:
         print("DHT22 read failed, retrying next cycle...")
         return
-    
-    """BASED ON YOUR CALIBRATION OR THE DETERMINATION OF ERROR, CHANGE THE HUMIDITY AND TEMPERATURE ACCORDINGLY BY ADDING AN EQUATION"""
-    """e.g HUM = humidity + 0.3. Then change the defined humidity and temperature terms in the script below respectively"""
         
     values = cmd_query_data();
     if values is not None and len(values) == 2 and humidity is not None and temperature is not None:
@@ -167,7 +167,6 @@ def recording():
         f.write(data_pt)
         print(m)
         print("Hour= {:1} PM2.5= {:1.2f}ug/m^3 PM10= {:1.2f}ug/m^3 Temp= {:1.2f}*C  Humidity= {:1.2f}%".format(h, values[0],values[1],temperature,humidity))
-        time.sleep(delay)
     elif values is None:
         print("Problem occurred with Air Quality sensor")
     elif humidity is None:

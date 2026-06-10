@@ -1,4 +1,4 @@
-# CM3267 Lab Instruction for Spectrometer
+# CM3267 Lab Instruction for Weather Station
 Ridhuan Syafiq
 
 ## Weather station setup

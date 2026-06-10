@@ -29,15 +29,15 @@ version for RPi 5.
     ├── spectrometer/
     │   ├── README.md
     │   ├── spectrometer_reqs.txt
-    │   ├── blinkatest.py
-    │   ├── pi_spectroscopy_v3-2.py
-    │   └── voltage_read.py
+    │   ├── blinkatest.py             # tests if interfaces work correctly
+    │   ├── voltage_read.py           # tests if photodiode works detects a signal
+    │   └── spectrometer.py           # main spectrometer script
     ├── weather_station/
     │   ├── README.md
     │   ├── weather_station_reqs.txt
-    │   ├── V2_DHT22_cal.py
-    │   ├── V2_weather.py
-    │   └── V2_weatherplot.py
+    │   ├── DHT22_cal.py              # calibration script for DHT22 sensor
+    │   ├── weatherplot.py            # quick plotting script
+    │   └── weather.py                # main weather station script
     ├── setup.sh
     └── README.md
 

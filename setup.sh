@@ -10,7 +10,7 @@ python3 -m venv --system-site-packages venv || { echo "ERROR: Failed to create v
  
 source venv/bin/activate || { echo "ERROR: Failed to activate venv for spectrometer."; exit 1; }
  
-pip install -r spectrometer_reqs_lite.txt || { echo "ERROR: Failed to install spectrometer dependencies."; exit 1; }
+pip install -r spectrometer_reqs.txt || { echo "ERROR: Failed to install spectrometer dependencies."; exit 1; }
  
 deactivate
 
@@ -24,7 +24,7 @@ python3 -m venv --system-site-packages venv || { echo "ERROR: Failed to create v
  
 source venv/bin/activate || { echo "ERROR: Failed to activate venv for weather station."; exit 1; }
  
-pip install -r weather_station_reqs_lite.txt || { echo "ERROR: Failed to install weather station dependencies."; exit 1; }
+pip install -r weather_station_reqs.txt || { echo "ERROR: Failed to install weather station dependencies."; exit 1; }
  
 deactivate
 

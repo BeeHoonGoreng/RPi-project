@@ -109,7 +109,7 @@ The script is titled `spectrometer.py`.
 
 ### B. Calibration
 
-1.  Run spectrometer.py. Select the “concentration” option when
+1.  Run `spectrometer.py`. Select the “concentration” option when
     prompted.
 
 2.  Get the absorbance readings of a few blanks to get LOD and LOQ.
@@ -121,7 +121,7 @@ The script is titled `spectrometer.py`.
 
 ### C. Absorption Spectrum
 
-1.  Run spectrometer.py. Select the “angle” option when prompted.
+1.  Run `spectrometer.py`. Select the “angle” option when prompted.
 
 2.  For each angle, take a blank read and a sample read.
 

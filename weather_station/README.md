@@ -39,35 +39,35 @@ that case, run `deactivate` and repeat from step 1.
 
 There are 3 scripts for use.
 
-- *weather.py* is the main data collection script.
+- `weather.py` is the main data collection script.
 
-- *DHT_cal.py* helps you find the mean absolute difference between the
-  actual and recorded temperature/humidity. You can then append this
-  values to *weather.py*.
+- `DHT22_cal.py` helps you find the mean absolute difference between the
+  actual and recorded temperature/humidity. You can then append these
+  values to `weather.py`.
 
-- *weatherploy.py* takes the output of *weather.py* and outputs a simple
+- `weatherplot.py` takes the output of `weather.py` and outputs a simple
   line plot.
 
 ------------------------------------------------------------------------
 
-### Execute weather.py on boot
+### Execute `weather.py` on boot
 
-If you wish to execute the *weather.py* script on boot, instructions
+If you wish to execute the `weather.py` script on boot, instructions
 below allow adding of the python execution to the boot sequence.
 
-1.  Create a shell script named *launcher.sh* in /home/pi/Desktop/:
+1.  Create a shell script named `launcher.sh` in /home/pi/Desktop/:
 
     ``` bash
     cd ~/Desktop
     nano launcher.sh
     ```
 
-2.  Copy the following into the *launcher.sh* text file:
+2.  Copy the following into the `launcher.sh` text file:
 
     ``` bash
     #!/bin/sh
-    cd /home/pi/RPI-project/weather_station
-    sudo python3 weather.py
+    cd /home/pi/RPi-project/weather_station
+    /home/pi/RPi-project/weather_station/venv/bin/python3 weather.py
     ```
 
 3.  Create a log folder for crontab logging via terminal:
@@ -78,7 +78,7 @@ below allow adding of the python execution to the boot sequence.
     ```
 
 4.  Access crontab (with `sudo crontab -e`) and append the following to
-    the end of the crontab script. Use /bin/nano as the editor if
+    the end of the crontab script. Use `/bin/nano` as the editor if
     prompted:
 
     ``` bash
@@ -99,9 +99,9 @@ NOTE:
   the python script is running in the background.
 
 - To check any error occured, simply check the log file by inputting
-  `cat ~/logs/cronlog` into the terminal. Otherwise, *Finaltest.csv*
+  `cat ~/logs/cronlog` into the terminal. Otherwise, `Finaltest.csv`
   contains your data collection in
-  /home/pi/RPi-projects/weather_station/,
+  `/home/pi/RPi-project/weather_station/`.
 
 - Adjust the schedule function calls to acquire readings in an
   appropriate interval.

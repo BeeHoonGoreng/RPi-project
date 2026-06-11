@@ -5,7 +5,7 @@ Ridhuan Syafiq
 
 ------------------------------------------------------------------------
 
-### Turning on virtual environment
+### Activating the virtual environment
 
 > [!WARNING]
 >
@@ -13,7 +13,8 @@ Ridhuan Syafiq
 > proceeding. Verify by checking that
 > `~/RPi-project/weather_station/venv` exists.
 
-1.  Run the following in the terminal.
+1.  In the terminal, navigate to the project directory and activate the
+    virtual environment:
 
     ``` bash
     cd ~/RPi-project/weather_station
@@ -27,6 +28,14 @@ Ridhuan Syafiq
     python3 DHT22_cal.py
     python3 weatherplot.py
     ```
+
+As with the spectrometer scripts, ensure that the virtual environment is
+activated before running any scripts – this is indicated by `(venv)`
+appearing at the start of the prompt. Note that the spectrometer and
+weather station projects each have their **own separate virtual
+environments**. If a script fails unexpectedly, it could be that you may
+have the wrong virtual environment active (they are named the same). In
+that case, run `deactivate` and repeat from step 1.
 
 There are 3 scripts for use.
 

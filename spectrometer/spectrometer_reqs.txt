@@ -14,3 +14,7 @@ pyusb==1.3.1
 RPi.GPIO==0.7.1
 rpi_ws281x==5.0.0
 sysv_ipc==1.2.0
+
+
+# lgpio is required for hardware GPIO function on RPI
+# it is installed at the system level - handled by --system-site-packages flag upon venv creation

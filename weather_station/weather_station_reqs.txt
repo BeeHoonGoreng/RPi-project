@@ -16,5 +16,6 @@ rpi_ws281x==5.0.0
 schedule==1.2.2
 sysv_ipc==1.2.0
 
+
 # lgpio is required for hardware GPIO function on RPI
 # it is installed at the system level - handled by --system-site-packages flag upon venv creation

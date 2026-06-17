@@ -125,6 +125,25 @@ timedatectl
 sudo date -s "25 MAY 2026 11:37:00" # Edit accordingly
 ```
 
+7.  Hold kernel and OS versions and freeze dependencies:
+
+``` bash
+# Hold kernel and OS
+sudo apt-mark hold linux-headers-6.12.75+rpt-rpi-2712
+sudo apt-mark hold linux-headers-rpi-2712
+sudo apt-mark hold linux-image-6.12.75+rpt-rpi-2712
+sudo apt-mark hold linux-image-rpi-2712
+
+# Hold python
+sudo apt-mark hold python3
+
+# Freeze updates (disable auto-update)
+sudo systemctl disable apt-daily.service
+sudo systemctl disable apt-daily-upgrade.service
+sudo systemctl disable apt-daily.timer
+sudo systemctl disable apt-daily-upgrade.timer
+```
+
 ------------------------------------------------------------------------
 
 ## RPi Setup

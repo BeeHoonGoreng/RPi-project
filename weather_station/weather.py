@@ -1,34 +1,45 @@
 #!/usr/bin/env python3 -u
-import serial
+
+############################################################
+# Initialisation                                           #
+############################################################
+
+###### Import modules ######################################
 import time, struct
+from datetime import datetime
+
+import serial
 import schedule
-import lgpio
 import adafruit_dht
 import board
-from datetime import datetime
-import matplotlib
-import matplotlib.pyplot as plt
 
-#############################################
-"INPUT SECTION"
-#############################################
+############################################################
+# INPUT SECTION                                            #
+############################################################
 
-"""Change filename"""
+# [EDIT] Change output file name
+filename = "weatherlog"
 
-filename = "Finaltest"                      #<< Change the filename
+# [EDIT] Calibration result
+temperature_error = 0
+humidity_error = 0
 
-"""Change filename"""
+# Based on your calibration or the determination of error,
+# change the temperature and humidity error below.
+# e.g calibration result: humidity = actual - 0.3. Update
+# humidity_error = -0.3
 
-#############################################
-"CHANNEL CREATION OF HUMIDITY AND TEMPERATURE DHT22 SENSOR"
-#############################################
+
+############################################################
+# CHANNEL CREATION OF HUMIDITY AND TEMPERATURE DHT22 SENSOR#
+############################################################
 
 DHT_PIN = 4
 DHT_SENSOR = adafruit_dht.DHT22(board.D4)                            ### Pin number can change with your preference, check GPIO pinout for reference
 
-#############################################
-"CHANNEL CREATION OF NOVA PM SENSOR"
-#############################################
+############################################################
+# CHANNEL CREATION OF NOVA PM SENSOR                       #
+############################################################
 
 DEBUG = 0
 CMD_MODE = 2
@@ -106,79 +117,74 @@ cmd_set_mode(MODE_QUERY);
 
 
 
-#############################################
-"FUNCTIONS FOR READING AND RECORDING SENSORS"
-#############################################
+############################################################
+# FUNCTIONS FOR READING AND RECORDING SENSORS              #
+############################################################
 
-def weather():
+def main():
+    # [EDIT] Set recording interval here
+    schedule.every(5).seconds.do(recording)
+    # schedule.every().hour.at(":30").do(recording)
+    # schedule.every().hour.at(":00").do(recording)
+    # schedule.every(1).minutes.do(recording)
+    # schedule.every().day.do(recording)
+
+    # Best to keep interval in whole 'hour' format as seen
+    # above. Change the schedule only if you are mindful of
+    # data processing e.g at the 15/30/45th minute of every
+    # hour works too. Any other denomination would be
+    # tedious though i.e last 3 options
+
+    print("recording data...")
+
     try:
-##       {Choice of interval selection to run script}
-        """Best to keep interval in whole 'hour' format as seen below."""
-        """Graph plotting script handles data in hours exclusively"""
-        """Change the schedule only if you are mindful of data processing"""
-        """e.g at the 15/30/45th minute of every hour works too."""
-        """Any other denomination would be tedious though i.e last 3 options"""
-
-##        schedule.every().hour.at(":30").do(recording)
-#         schedule.every().hour.at(":00").do(recording)
-#         schedule.every(1).minutes.do(recording)
-##        schedule.every().day.do(recording)
-        schedule.every(5).seconds.do(recording)
-        
-        print("recording data...")
-
         while True:
             schedule.run_pending()
-            time.sleep(1)
+            time.sleep(1)     # while loop is checked every second (the smallest interval is per second)
     except KeyboardInterrupt: # If CTRL+C is pressed, exit cleanly:
         print("Program end")
 
-    
-    """BASED ON YOUR CALIBRATION OR THE DETERMINATION OF ERROR, CHANGE THE HUMIDITY AND TEMPERATURE ACCORDINGLY BY ADDING AN EQUATION"""
-    """e.g humidity = DHT_SENSOR.humidity + 0.3. Then change the defined humidity and temperature terms in the script below respectively"""
-
+# recording() writes the data into a tab-delimited format:
+# column namnes : TIMESTAMP | HOUR | PM2.5 | PM10 | TEMPERATURE | HUMIDITY
 def recording():
     cmd_set_sleep(0)
     try:
-        temperature = DHT_SENSOR.temperature
-        humidity = DHT_SENSOR.humidity
-    except RuntimeError:
-        print("DHT22 read failed, retrying next cycle...")
+        temperature = DHT_SENSOR.temperature + temperature_error
+        humidity = DHT_SENSOR.humidity + humidity_error
+
+    except Exception as e:
+        print(f"DHT22 read failed: {e}, retrying next cycle...")
         return
-        
-    values = cmd_query_data();
+    
+    try:
+        values = cmd_query_data();
+    except Exception as e:
+        print(f"PM sensor read failed: {e}, retrying next cycle...")
+        return
+    
     if values is not None and len(values) == 2 and humidity is not None and temperature is not None:
-        f = open(filename+".csv", 'a')
-        m = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
-        x = datetime.strptime(m, '%Y-%m-%d %H:%M:%S')
-        xs = matplotlib.dates.date2num(x)
+        timestamp = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
         h = datetime.now().hour
         
-        """ Change humidity and temperature according to conclusions from calibration"""
+        data_pt = f"{timestamp}\t{h:1}\t{values[0]:.2f}\t{values[1]:.2f}\t{temperature:.2f}\t{humidity:.2f}\n"
+
+        with open(filename + ".tsv", 'a') as f:
+            f.write(data_pt)
         
-        data_pt = "{:1}{:15.6f}{:7.2f}{:7.2f}{:7.2f}{:7.2f}\n".format(h, xs, values[0], values[1], temperature, humidity)
-        
-        """ Change humidity and temperature according to conclusions from calibration"""
-        
-        ###############################################
-        ###Format of {} above:###
-        ###{'Column/printing index':'Space between columns'.'Number of decimal places'f} , f = float i.e numbers with decimals ###
-        ###############################################
-        f.write(data_pt)
-        print(m)
-        print("Hour= {:1} PM2.5= {:1.2f}ug/m^3 PM10= {:1.2f}ug/m^3 Temp= {:1.2f}*C  Humidity= {:1.2f}%".format(h, values[0],values[1],temperature,humidity))
+        print(timestamp)
+        print(f"Hour = {h:1}\tPM2.5 =\t{values[0]:1.2f}ug/m^3\tPM10 = {values[1]:1.2f}ug/m^3\tTemp = {temperature:1.2f}*C\tHumidity = {humidity:1.2f}%")
+    
     elif values is None:
         print("Problem occurred with Air Quality sensor")
-    elif humidity is None:
-        print("Problem occurred with DHT22 sensor")
-    elif temperature is None:
+    elif humidity is None or temperature is None:
         print("Problem occurred with DHT22 sensor")
     else:
         print ("Failed to retrieve data from sensors")
 
-#############################################
-"EXECUTION OF WEATHER STATION"
-#############################################
 
-weather()
+############################################################
+# EXECUTION OF WEATHER STATION                             #
+############################################################
 
+if __name__ == "__main__":
+    main()

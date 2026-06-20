@@ -120,7 +120,7 @@ def query():
         std_v = np.std(dataSamples)       #Standard deviation
         print(f"Voltage = {v:.5f}\n")
 
-        query_str = input("Repeat recording? (y/n) : ").strip().lower()
+        query_str = input("Repeat recording? (y/N) : ").strip().lower()
 
         if query_str != "y":
             break

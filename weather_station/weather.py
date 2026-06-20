@@ -172,7 +172,7 @@ def recording():
             f.write(data_pt)
         
         print(timestamp)
-        print(f"Hour = {h:1}\tPM2.5 =\t{values[0]:1.2f}ug/m^3\tPM10 = {values[1]:1.2f}ug/m^3\tTemp = {temperature:1.2f}*C\tHumidity = {humidity:1.2f}%")
+        print(f"Hour= {h:1}  PM2.5 = {values[0]:1.2f}ug/m^3  PM10= {values[1]:1.2f}ug/m^3  Temp= {temperature:1.2f}*C  Humidity= {humidity:1.2f}%")
     
     elif values is None:
         print("Problem occurred with Air Quality sensor")

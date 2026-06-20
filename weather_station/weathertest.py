@@ -158,7 +158,7 @@ def main():
         if record["pm_err"]:  status.append(f"PM:{record['pm_err']}")
         status_str = ", ".join(status) if status else "OK"
 
-        print(f"{i+1:<4} {timestamp:<10} {pm25:>8} {pm10:>8} {t:<8} {h:>10} {status_str}")
+        print(f"{i+1:<4} {timestamp:<10} {pm25:<8} {pm10:<8} {t:<8} {h:<10} {status_str}")
 
         if i < N_READINGS - 1:
             time.sleep(INTERVAL)
@@ -171,7 +171,7 @@ def main():
     print("DIAGNOSIS")
     print("=" * 65)
 
-    print(f"Test completed in {elapsed_time} seconds.")
+    print(f"Test completed in {elapsed_time:.1f} seconds.")
     print(f"\nDHT22 - {N_READINGS - dht_failures}/{N_READINGS} OK")
     if dht_failures > 0:
         print(f"\tWARNING : {dht_failures} failures. Sensor is not stable, check wiring.")
@@ -192,6 +192,8 @@ def main():
 
     else:
         print("\tIssues were detected. Review warnings before continuing")
+        
+    DHT_SENSOR.exit()
 
 
 if __name__ == "__main__":

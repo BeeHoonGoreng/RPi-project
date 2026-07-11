@@ -60,7 +60,7 @@ else:
     HARDWARE=False
     
     while True:
-        response = input("Continue with fake data? [Y/n] : " ).strip().lower()
+        response = input("Continue with fake data? [Yc/n] : " ).strip().lower()
 
         if response != "y":
             sys.exit("Exiting script.")

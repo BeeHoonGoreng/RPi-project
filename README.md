@@ -111,11 +111,14 @@ conflicts.
     </tbody>
     </table>
 
-4.  This will wipe the sd card and automatically format to FAT32.
+4.  Write to the disk. If a dialogue box pops up, press “x” (NOT
+    CANCEL).
 
-5.  Plug-and-play into the RPi 5.
+5.  This will wipe the sd card and automatically format to FAT32.
 
-6.  Go to terminal to check date and time.
+6.  Plug-and-play into the RPi 5.
+
+7.  Go to terminal to check date and time.
 
 ``` bash
 # Check date and time

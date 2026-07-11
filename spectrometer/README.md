@@ -1,6 +1,15 @@
 # CM3267 Lab Instruction for Spectrometer
 Ridhuan Syafiq
 
+This folder contains the following scripts:
+
+- `blinkatest.py` tests your I2C and SPI connections.
+
+- `voltage_read.py` verifies that your machine outputs voltage.
+
+- `spectrometer.py` collects spectral data and is the main data
+  collection script
+
 ## Spectrometer setup
 
 ------------------------------------------------------------------------
@@ -92,8 +101,7 @@ The script is titled `spectrometer.py`.
 
 ### A. Testing your spectrometer
 
-1.  Run the script as above, again ensuring you are in the correct
-    folder, and the venv is active. Example:
+1.  Ensure the virtual environment is active and run `spectrometer.py`.
 
     ``` bash
     python3 spectrometer.py

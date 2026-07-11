@@ -35,6 +35,9 @@ version for RPi 5.
     ├── weather_station/
     │   ├── README.md
     │   ├── weather_station_reqs.txt
+    │   ├── example.tsv               # example output of weather.py
+    │   ├── weatherplot_notebook      # data visualisation examples
+    │   ├── weathertest.py            # diagnostic tool for weather.py
     │   ├── DHT22_cal.py              # calibration script for DHT22 sensor
     │   ├── weatherplot.py            # quick plotting script
     │   └── weather.py                # main weather station script
@@ -168,7 +171,7 @@ virtual environments and downloads dependencies for you.
 
 ## Usage
 
-Before running any *.py* script, you have activate the relevant venv by
+Before running any `.py` script, you have activate the relevant venv by
 going into the correct project folder and running
 `source venv/bin/activate`. Run `deactivate` after to prevent conflicts.
 Example:
@@ -197,8 +200,4 @@ the scripts they contain.
     is used instead
 
 - `*_reqs.txt` in each folder pins exact package versions (using
-  `pip freeze`) for reproducibility
-
-- Tested on:
-
-- Known issues:
+  `pip freeze`) for reproducibility.

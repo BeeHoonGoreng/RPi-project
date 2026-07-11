@@ -37,7 +37,7 @@ environments**. If a script fails unexpectedly, it could be that you may
 have the wrong virtual environment active (they are named the same). In
 that case, run `deactivate` and repeat from step 1.
 
-There are 3 scripts for use.
+There are 5 scripts for use.
 
 - `weather.py` is the main data collection script.
 
@@ -47,6 +47,16 @@ There are 3 scripts for use.
 
 - `weatherplot.py` takes the output of `weather.py` and outputs a simple
   line plot.
+
+- `weathertest.py` is a diagnostic tool to check the stability of your
+  connections by sampling recordings. Execute this script before running
+  your experiment with `weather.py`.
+
+- `weatherplot_notebook.py` demonstrates how to interpret the output of
+  `weathertest.py` (with `example.tsv` as input) using Python, with
+  annotated examples of data visualisation. This file is intended to be
+  run on your personal computer in an IDE that supports cell-based
+  execution, such as Spyder
 
 ------------------------------------------------------------------------
 
@@ -92,6 +102,9 @@ below allow adding of the python execution to the boot sequence.
     ``` bash
     sudo reboot
     ```
+
+7.  To deactivate the script from executing on boot, simply access
+    `launcher.sh` and comment out the last 2 lines. Then reboot.
 
 NOTE:
 

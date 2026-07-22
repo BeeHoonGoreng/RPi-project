@@ -1,6 +1,27 @@
 # CM3267 Lab Instruction for Weather Station
 Ridhuan Syafiq
 
+This folder contains 5 scripts for use:
+
+- `weather.py` is the main data collection script.
+
+- `DHT22_cal.py` helps you find the mean absolute difference between the
+  actual and recorded temperature/humidity. You can then append these
+  values to `weather.py`.
+
+- `weatherplot.py` takes the output of `weather.py` and outputs a simple
+  line plot.
+
+- `weathertest.py` is a diagnostic tool to check the stability of your
+  connections by sampling recordings. Execute this script before running
+  your experiment with `weather.py`.
+
+- `weatherplot_notebook.py` demonstrates how to interpret the output of
+  `weathertest.py` (with `example.tsv` as input) using Python, with
+  annotated examples of data visualisation. This file is intended to be
+  run on your personal computer in an IDE that supports cell-based
+  execution, such as Spyder
+
 ## Weather station setup
 
 ------------------------------------------------------------------------
@@ -36,27 +57,6 @@ weather station projects each have their **own separate virtual
 environments**. If a script fails unexpectedly, it could be that you may
 have the wrong virtual environment active (they are named the same). In
 that case, run `deactivate` and repeat from step 1.
-
-There are 5 scripts for use.
-
-- `weather.py` is the main data collection script.
-
-- `DHT22_cal.py` helps you find the mean absolute difference between the
-  actual and recorded temperature/humidity. You can then append these
-  values to `weather.py`.
-
-- `weatherplot.py` takes the output of `weather.py` and outputs a simple
-  line plot.
-
-- `weathertest.py` is a diagnostic tool to check the stability of your
-  connections by sampling recordings. Execute this script before running
-  your experiment with `weather.py`.
-
-- `weatherplot_notebook.py` demonstrates how to interpret the output of
-  `weathertest.py` (with `example.tsv` as input) using Python, with
-  annotated examples of data visualisation. This file is intended to be
-  run on your personal computer in an IDE that supports cell-based
-  execution, such as Spyder
 
 ------------------------------------------------------------------------
 
